@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import api from "../services/Api";
 import { useAuth } from "../context/AuthContext";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -95,7 +96,11 @@ function Books() {
                             <div className="col" key={book.id}>
                                 <div className="card h-100">
                                     <div className="card-body">
-                                        <h5 className="card-title">{book.title}</h5>
+                                        <h5 className="card-title">
+                                            <Link to={`/books/${book.id}`} className="text-decoration-none text-dark stretched-link">
+                                                {book.title}
+                                            </Link>
+                                        </h5>
                                         <h6 className="card-subtitle mb-2 text-muted">
                                             {book.author?.name}
                                         </h6>

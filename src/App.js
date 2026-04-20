@@ -7,6 +7,7 @@ import Authors from './pages/Authors';
 //import Genres from './pages/Genres';
 import Reviews from './pages/Reviews';
 import ReadingLists from './pages/ReadingLists';
+import BookDetail from './pages/BookDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // react defailts
@@ -25,6 +26,7 @@ function App() {
           <Route path="/authors" element={<ProtectedRoute><Authors /></ProtectedRoute>} />
           <Route path="/reviews" element={<ProtectedRoute><Reviews /></ProtectedRoute>} />
           <Route path="/reading-lists" element={<ProtectedRoute><ReadingLists /></ProtectedRoute>} />
+          <Route path="/books/:id" element={<BookDetail />} />
         </Routes>
       </div>
     </>
