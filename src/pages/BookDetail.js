@@ -6,7 +6,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 function BookDetail() {
     const { id } = useParams();
-    const { token } = useAuth();
+    const { token, user } = useAuth();
 
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -18,6 +18,14 @@ function BookDetail() {
     const [adding, setAdding] = useState(false);
     const [addSuccess, setAddSuccess] = useState("");
     const [addError, setAddError] = useState("");
+
+    // Review states
+    const [reviews, setReviews] = useState([]);
+    const [reviewRating, setReviewRating] = useState(5);
+    const [reviewContent, setReviewContent] = useState("");
+    const [submittingReview, setSubmittingReview] = useState(false);
+    const [reviewError, setReviewError] = useState("");
+    const [reviewSuccess, setReviewSuccess] = useState("");
 
     // Fetch book details on mount
     useEffect(() => {
@@ -44,6 +52,45 @@ function BookDetail() {
             })
             .catch(() => {});
     }, [token]);
+
+    // Fetch reviews for this book
+    useEffect(() => {
+        api.get(`/api/reviews/book/${id}`)
+            .then((res) => setReviews(res.data))
+            .catch(() => {});
+    }, [id]);
+
+    const handleSubmitReview = async (e) => {
+        e.preventDefault();
+        setReviewError("");
+        setReviewSuccess("");
+        setSubmittingReview(true);
+        try {
+            const res = await api.post("/api/reviews", {
+                bookId: parseInt(id),
+                rating: reviewRating,
+                content: reviewContent.trim() || null,
+            });
+            setReviews((prev) => [res.data, ...prev]);
+            setReviewRating(5);
+            setReviewContent("");
+            setReviewSuccess("Review submitted!");
+        } catch (err) {
+            setReviewError("Failed to submit review. Please try again.");
+        } finally {
+            setSubmittingReview(false);
+        }
+    };
+
+    // Handle deleting a review — only allow if the current user is the author of the review
+    const handleDeleteReview = async (reviewId) => {
+        try {
+            await api.delete(`/api/reviews/${reviewId}`);
+            setReviews((prev) => prev.filter((r) => r.id !== reviewId));
+        } catch (err) {
+            setReviewError("Failed to delete review. Please try again.");
+        }
+    };
 
     const bookId = parseInt(id);
     const selectedList = readingLists.find((l) => l.id === selectedListId);
@@ -167,6 +214,80 @@ function BookDetail() {
                     )}
                 </div>
             </div>
+
+            {/* Reviews section */}
+            {/* TODO make section collapsible */}
+
+            <hr className="my-4" />
+            <h4 className="mb-3">Reviews</h4>
+
+            {token && (
+                <div className="card mb-4">
+                    <div className="card-body">
+                        <h6 className="card-title">Leave a Review</h6>
+                        {reviewError && <div className="alert alert-danger py-1 px-3 small">{reviewError}</div>}
+                        {reviewSuccess && <div className="alert alert-success py-1 px-3 small">{reviewSuccess}</div>}
+                        <form onSubmit={handleSubmitReview}>
+                            <div className="mb-3">
+                                <label className="form-label">Rating</label>
+                                <select
+                                    className="form-select w-auto"
+                                    value={reviewRating}
+                                    onChange={(e) => setReviewRating(parseInt(e.target.value))}
+                                >
+                                    {[1, 2, 3, 4, 5].map((n) => (
+                                        <option key={n} value={n}>{n} / 5</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    Review <span className="text-muted fw-normal"></span>
+                                </label>
+                                <textarea
+                                    className="form-control"
+                                    rows={3}
+                                    maxLength={5000}
+                                    value={reviewContent}
+                                    onChange={(e) => setReviewContent(e.target.value)}
+                                    placeholder="Share your thoughts..."
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-primary" disabled={submittingReview}>
+                                {submittingReview ? "Submitting..." : "Submit Review"}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {reviews.length === 0 ? (
+                <p className="text-muted">No reviews yet. Be the first!</p>
+            ) : (
+                <div className="list-group">
+                    {reviews.map((review) => (
+                        <div key={review.id} className="list-group-item">
+                            <div className="d-flex justify-content-between align-items-center mb-1">
+                                <span className="fw-semibold">{review.user?.displayName ?? "User"}</span>
+                                <div className="d-flex align-items-center gap-2">
+                                    <span className="badge bg-primary">{review.rating} / 5</span>
+                                    {user?.id === review.user?.id && (
+                                        <button
+                                            className="btn btn-sm btn-outline-danger"
+                                            onClick={() => handleDeleteReview(review.id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                            {review.content && (
+                                <p className="mb-0 text-muted">{review.content}</p>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

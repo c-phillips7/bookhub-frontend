@@ -184,7 +184,6 @@ function ReadingListDetails() {
                                     <span className="fw-semibold">
                                         {item.book?.title ?? `Book #${item.bookId}`}
                                     </span>
-                                    <span className="ms-3 badge bg-secondary">{item.status}</span>
                                     <span className="ms-2 text-muted small">
                                         Added {new Date(item.dateAdded).toLocaleDateString()}
                                     </span>

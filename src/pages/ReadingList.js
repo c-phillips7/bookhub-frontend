@@ -1,1 +1,0 @@
-//Logic for individual reading list to show full list with option to remove books from list
