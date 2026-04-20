@@ -3,11 +3,11 @@ import api from "../services/Api";
 import { useAuth } from "../context/AuthContext";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Pagination from "../components/Pagination";
+import SearchBar from "../components/SearchBar";
 
 const ITEMS_PER_PAGE = 12;
 
-//TODO add search and filter functionality
-//TODO add interactive links to book details, author pages, genre pages, etc.
+//TODO add interactive links to book details, author pages, genre pages on clicks. Maybe add ratings.
 //TODO update book cards to show more info and look nicer, maybe add cover images if available
 
 function Books() {
@@ -15,6 +15,7 @@ function Books() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
+    const [search, setSearch] = useState("");
     const { token } = useAuth();
 
     useEffect(() => {
@@ -32,8 +33,15 @@ function Books() {
         }
     };
 
-    const totalPages = Math.ceil(books.length / ITEMS_PER_PAGE);
-    const displayedBooks = books.slice(
+    // display filtered books based on search query, matching title, author name, or genres
+    const filteredBooks = books.filter(book =>
+        book.title.toLowerCase().includes(search.toLowerCase()) ||
+        book.author?.name.toLowerCase().includes(search.toLowerCase()) ||
+        book.genres?.some(g => g.toLowerCase().includes(search.toLowerCase()))
+    );
+
+    const totalPages = Math.ceil(filteredBooks.length / ITEMS_PER_PAGE);
+    const displayedBooks = filteredBooks.slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
     );
@@ -52,6 +60,11 @@ function Books() {
                 <p>No books found.</p>
             ) : (
                 <>
+                    <SearchBar
+                        value={search}
+                        onChange={(val) => { setSearch(val); setCurrentPage(1); }}
+                        placeholder="Search by title, author or genre..."
+                    />
                     <div className="row row-cols-1 row-cols-md-3 g-4">
                         {displayedBooks.map((book) => (
                             <div className="col" key={book.id}>
