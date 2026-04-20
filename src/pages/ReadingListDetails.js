@@ -182,7 +182,13 @@ function ReadingListDetails() {
                             >
                                 <div className={staged ? "text-decoration-line-through text-muted" : ""}>
                                     <span className="fw-semibold">
-                                        {item.book?.title ?? `Book #${item.bookId}`}
+                                        {staged ? (
+                                            item.book?.title ?? `Book #${item.bookId}`
+                                        ) : (
+                                            <Link to={`/books/${item.bookId}`} className="text-decoration-none text-dark">
+                                                {item.book?.title ?? `Book #${item.bookId}`}
+                                            </Link>
+                                        )}
                                     </span>
                                     <span className="ms-2 text-muted small">
                                         Added {new Date(item.dateAdded).toLocaleDateString()}
