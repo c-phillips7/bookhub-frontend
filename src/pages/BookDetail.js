@@ -223,7 +223,7 @@ function BookDetail() {
             <hr className="my-4" />
             <h4 className="mb-3">Reviews</h4>
 
-            // check if the user is logged in and has already submitted a review to conditionally show the review form or a message about already having reviewed.
+            {/* check if the user is logged in and has already submitted a review to conditionally show the review form or a message about already having reviewed.*/}
             {token && !userAlreadyReviewed && (
                 <div className="card mb-4">
                     <div className="card-body">
