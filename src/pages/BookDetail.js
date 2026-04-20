@@ -93,6 +93,8 @@ function BookDetail() {
     };
 
     const bookId = parseInt(id);
+    // Check if the user is logged in and has already submitted a review
+    const userAlreadyReviewed = user && reviews.some((r) => r.user?.id === user.id);
     const selectedList = readingLists.find((l) => l.id === selectedListId);
     // Check if the book is already in the selected reading list to disable the add button and show appropriate text
     const alreadyInSelectedList = selectedList?.items?.some((item) => item.bookId === bookId) ?? false;
@@ -221,7 +223,8 @@ function BookDetail() {
             <hr className="my-4" />
             <h4 className="mb-3">Reviews</h4>
 
-            {token && (
+            // check if the user is logged in and has already submitted a review to conditionally show the review form or a message about already having reviewed.
+            {token && !userAlreadyReviewed && (
                 <div className="card mb-4">
                     <div className="card-body">
                         <h6 className="card-title">Leave a Review</h6>
