@@ -9,6 +9,7 @@ const ITEMS_PER_PAGE = 12;
 
 //TODO add interactive links to book details, author pages, genre pages on clicks. Maybe add ratings.
 //TODO update book cards to show more info and look nicer, maybe add cover images if available
+//TODO add an add to reading list button once that feature is implemented, maybe add a "currently reading" status for books in the user's list
 
 function Books() {
     const [books, setBooks] = useState([]);
