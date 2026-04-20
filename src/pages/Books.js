@@ -14,10 +14,12 @@ const ITEMS_PER_PAGE = 12;
 function Books() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
     const [search, setSearch] = useState("");
+    const [genres, setGenres] = useState([]);
+    const [selectedGenre, setSelectedGenre] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
     const { token } = useAuth();
+    const [error, setError] = useState("");
 
     useEffect(() => {
         fetchBooks();
@@ -25,21 +27,29 @@ function Books() {
 
     const fetchBooks = async () => {
         try {
-            const response = await api.get("/api/books");
-            setBooks(response.data);
+            const [booksRes, genresRes] = await Promise.all([
+                api.get('/api/books'),
+                api.get('/api/genres')
+            ]);
+            setBooks(booksRes.data);
+            setGenres(genresRes.data);
         } catch (err) {
-            setError("Failed to load books. Please try again later.");
+            setError('Failed to load books. Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
     // display filtered books based on search query, matching title, author name, or genres
-    const filteredBooks = books.filter(book =>
-        book.title.toLowerCase().includes(search.toLowerCase()) ||
-        book.author?.name.toLowerCase().includes(search.toLowerCase()) ||
-        book.genres?.some(g => g.toLowerCase().includes(search.toLowerCase()))
-    );
+    const filteredBooks = books
+        .filter(book =>
+            book.title.toLowerCase().includes(search.toLowerCase()) ||
+            book.author?.name.toLowerCase().includes(search.toLowerCase())
+        )
+        .filter(book =>
+            selectedGenre === '' ||
+            book.genres?.some(g => g.toLowerCase() === selectedGenre.toLowerCase())
+        );
 
     const totalPages = Math.ceil(filteredBooks.length / ITEMS_PER_PAGE);
     const displayedBooks = filteredBooks.slice(
@@ -64,8 +74,22 @@ function Books() {
                     <SearchBar
                         value={search}
                         onChange={(val) => { setSearch(val); setCurrentPage(1); }}
-                        placeholder="Search by title, author or genre..."
+                        placeholder="Search by title or author..."
                     />
+                    <div className="mb-3">
+                        <select
+                            className="form-select"
+                            value={selectedGenre}
+                            onChange={(e) => { setSelectedGenre(e.target.value); setCurrentPage(1); }}
+                        >
+                            <option value="">All Genres</option>
+                            {genres.map((genre) => (
+                                <option key={genre.id} value={genre.name}>
+                                    {genre.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <div className="row row-cols-1 row-cols-md-3 g-4">
                         {displayedBooks.map((book) => (
                             <div className="col" key={book.id}>

@@ -36,10 +36,7 @@ function Navbar() {
                                     <Link className="nav-link" to="/authors">Authors</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/genres">Genres</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/reviews">Reviews</Link>
+                                    <Link className="nav-link" to="/reviews">My Reviews</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/reading-lists">Reading Lists</Link>
