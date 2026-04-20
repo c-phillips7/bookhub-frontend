@@ -1,3 +1,15 @@
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Books from './pages/Books';
+import Authors from './pages/Authors';
+import Genres from './pages/Genres';
+import Reviews from './pages/Reviews';
+import ReadingLists from './pages/ReadingLists';
+import ProtectedRoute from './components/ProtectedRoute';
+
+// react defailts
 import logo from './logo.svg';
 import './App.css';
 
