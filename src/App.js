@@ -15,22 +15,20 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <div className="container mt-4">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Books />} />
+          <Route path="/authors" element={<ProtectedRoute><Authors /></ProtectedRoute>} />
+          <Route path="/genres" element={<ProtectedRoute><Genres /></ProtectedRoute>} />
+          <Route path="/reviews" element={<ProtectedRoute><Reviews /></ProtectedRoute>} />
+          <Route path="/reading-lists" element={<ProtectedRoute><ReadingLists /></ProtectedRoute>} />
+        </Routes>
+      </div>
+    </>
   );
 }
 
