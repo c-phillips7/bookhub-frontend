@@ -29,7 +29,16 @@ function Register() {
             setSuccess("Registration successful! Please check your email to verify your account.");
             setTimeout(() => { navigate("/login"); }, 3000);
         } catch (err) {
-            setError(err.response?.data || err.message || 'Registration failed. Please try again.');
+            const data = err.response?.data;
+            if (Array.isArray(data)) {
+                setError(data.map(e => e.description).join(' '));
+            } else if (typeof data === 'string') {
+                setError(data);
+            } else if (typeof data === 'object' && data !== null) {
+                setError(JSON.stringify(data));
+            } else {
+                setError(err.message || 'Registration failed. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
