@@ -41,12 +41,13 @@ function Login() {
             <div className="col-md-4">
                 <h2 className="mb-4" >Login</h2>
 
-                {error && <div className="alert alert-danger">{error}</div>}
+                {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label className="form-label">Email</label>
+                        <label className="form-label" htmlFor="login-email">Email</label>
                         <input
+                            id="login-email"
                             type="email"
                             className="form-control"
                             value={email}
@@ -56,8 +57,9 @@ function Login() {
                     </div>
 
                     <div className="mb-3">
-                        <label className="form-label">Password</label>
+                        <label className="form-label" htmlFor="login-password">Password</label>
                         <input
+                            id="login-password"
                             type="password"
                             className="form-control"
                             value={password}
