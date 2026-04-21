@@ -270,7 +270,9 @@ function BookDetail() {
                     {reviews.map((review) => (
                         <div key={review.id} className="list-group-item">
                             <div className="d-flex justify-content-between align-items-center mb-1">
-                                <span className="fw-semibold">{review.user?.displayName ?? "User"}</span>
+                                <Link to={`/users/${review.user?.id}`} className="fw-semibold text-decoration-none text-dark">
+                                    {review.user?.displayName ?? "User"}
+                                </Link>
                                 <div className="d-flex align-items-center gap-2">
                                     <span className="badge bg-primary">{review.rating} / 5</span>
                                     {user?.id === review.user?.id && (
