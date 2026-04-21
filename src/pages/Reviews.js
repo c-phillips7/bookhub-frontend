@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/Api";
 import LoadingSpinner from "../components/LoadingSpinner";
+import Pagination from "../components/Pagination";
+
+const ITEMS_PER_PAGE = 10;
 
 function Reviews() {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [deleteError, setDeleteError] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         api.get("/api/reviews/my")
@@ -22,10 +26,22 @@ function Reviews() {
         try {
             await api.delete(`/api/reviews/${reviewId}`);
             setReviews((prev) => prev.filter((r) => r.id !== reviewId));
+            // If deleting the last item on a non-first page, step back for pagination
+            setCurrentPage((prev) => {
+                const newTotal = Math.ceil((reviews.length - 1) / ITEMS_PER_PAGE);
+                return prev > newTotal ? Math.max(1, newTotal) : prev;
+            });
         } catch {
             setDeleteError("Failed to delete review. Please try again.");
         }
     };
+
+    // Calculate pagination
+    const totalPages = Math.ceil(reviews.length / ITEMS_PER_PAGE);
+    const displayedReviews = reviews.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
 
     if (loading) return <LoadingSpinner />;
     if (error) return <div className="alert alert-danger">{error}</div>;
@@ -45,7 +61,7 @@ function Reviews() {
                 </p>
             ) : (
                 <div className="list-group">
-                    {reviews.map((review) => (
+                    {displayedReviews.map((review) => (
                         <div key={review.id} className="list-group-item mb-2">
                             <div className="d-flex justify-content-between align-items-start">
                                 <div>
@@ -73,6 +89,7 @@ function Reviews() {
                     ))}
                 </div>
             )}
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
         </div>
     );
 }
