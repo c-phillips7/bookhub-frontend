@@ -1,70 +1,104 @@
-# Getting Started with Create React App
+# BookHub Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A single-page React application for managing and discovering books. Users can browse books, leave reviews, and manage personal reading lists. Administrators have access to additional CRUD pages for managing books, authors, genres, and users.
 
-## Available Scripts
+The frontend consumes the BookHub .NET Core backend API, which handles authentication and all data persistence.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Node.js 18 or higher
+- npm 9 or higher
+- A running instance of the BookHub backend API (local or deployed)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Environment Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Create a `.env` file in the project root. A single variable is required:
 
-### `npm run build`
+```
+REACT_APP_API_URL=https://your-api-url.com
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+For local development against a locally running API:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+REACT_APP_API_URL=http://localhost:5000
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The deployed backend is available at `https://bookhub-7cs4.onrender.com` and can be used directly if you do not want to run the API locally. If you prefer to run the API yourself, the source code is available at https://github.com/c-phillips7/BookHubApi.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Installation
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Install dependencies:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## Running the App
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Start the development server:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+npm start
+```
 
-### Code Splitting
+The app will open at `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Running Tests
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Run the full test suite:
 
-### Making a Progressive Web App
+```
+npm test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+To run once without watch mode:
 
-### Advanced Configuration
+```
+npm test -- --watchAll=false
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## Building for Production
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```
+npm run build
+```
 
-### `npm run build` fails to minify
+The optimised output is written to the `build/` folder and can be served by any static hosting provider such as Netlify.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## Features
+
+- Browse and search books with pagination
+- User registration, login, and JWT-based authentication
+- Leave and delete reviews on books (one review per user per book)
+- Create and manage personal reading lists with public/private visibility
+- View public profiles, reading lists, and reviews for any user
+- Admin-only panel for full CRUD management of books, authors, genres, and users
+- Role-based route protection using React Context and JWT decoding
+
+---
+
+## Project Structure
+
+```
+src/
+  components/       Shared reusable components (Navbar, Pagination, SearchBar, etc.)
+  context/          AuthContext - global authentication state
+  pages/            One file per page/view
+    adminPages/     Admin-only CRUD pages
+  services/         Axios instance with JWT auto-injection
+```
