@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import App from './App';
@@ -26,17 +26,21 @@ function renderApp(route = '/') {
  // Tests //
 //--------//
 
-test('renders without crashing', () => {
+test('renders without crashing', async () => {
     renderApp('/');
-    expect(document.body).toBeInTheDocument();
+    await waitFor(() => expect(document.body).toBeInTheDocument());
 });
 
-test('shows login link in navbar when not authenticated', () => {
+test('shows login link in navbar when not authenticated', async () => {
     renderApp('/');
-    expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument();
+    await waitFor(() =>
+        expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument()
+    );
 });
 
-test('navigating to /login renders the login form', () => {
+test('navigating to /login renders the login form', async () => {
     renderApp('/login');
-    expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+    await waitFor(() =>
+        expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument()
+    );
 });
