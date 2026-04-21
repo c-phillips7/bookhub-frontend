@@ -3,6 +3,20 @@ import axios from "axios";
 
 const AuthContext = createContext();
 
+// Decode the JWT payload and return roles as an array.
+function getRolesFromToken(token) {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const role =
+      payload["role"] ||
+      payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    if (!role) return [];
+    return Array.isArray(role) ? role : [role];
+  } catch {
+    return [];
+  }
+}
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     try {
@@ -48,8 +62,10 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
+  const isAdmin = token ? getRolesFromToken(token).includes("Admin") : false;
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

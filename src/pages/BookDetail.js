@@ -218,7 +218,6 @@ function BookDetail() {
             </div>
 
             {/* Reviews section */}
-            {/* TODO make section collapsible */}
 
             <hr className="my-4" />
             <h4 className="mb-3">Reviews</h4>

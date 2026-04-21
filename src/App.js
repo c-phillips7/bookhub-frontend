@@ -10,6 +10,8 @@ import ReadingLists from './pages/ReadingLists';
 import ReadingListDetails from './pages/ReadingListDetails';
 import BookDetail from './pages/BookDetail';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
+import Update from './pages/Update';
 
 // react defailts
 import logo from './logo.svg';
@@ -29,6 +31,7 @@ function App() {
           <Route path="/reading-lists" element={<ProtectedRoute><ReadingLists /></ProtectedRoute>} />
           <Route path="/reading-lists/:id" element={<ProtectedRoute><ReadingListDetails /></ProtectedRoute>} />
           <Route path="/books/:id" element={<BookDetail />} />
+          <Route path="/update" element={<AdminRoute><Update /></AdminRoute>} />
         </Routes>
       </div>
     </>
