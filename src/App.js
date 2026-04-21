@@ -18,8 +18,6 @@ import UpdateGenres from './pages/adminPages/UpdateGenres';
 import UpdateUsers from './pages/adminPages/UpdateUsers';
 import User from './pages/User';
 
-// react defailts
-import logo from './logo.svg';
 import './App.css';
 
 function App() {

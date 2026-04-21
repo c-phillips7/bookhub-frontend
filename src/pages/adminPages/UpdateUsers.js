@@ -15,7 +15,7 @@ function UpdateUsers() {
             .then((res) => setUsers(res.data.filter((u) => u.id !== currentUser?.id))) // Exclude current user from list to prevent self-deletion
             .catch(() => setError("Failed to load users."))
             .finally(() => setLoading(false));
-    }, []);
+    }, [currentUser?.id]);
 
     const handleDelete = async (id, displayName) => {
         // Confirm deletion with user!!!

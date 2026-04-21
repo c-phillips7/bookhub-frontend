@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/Api";
-import { useAuth } from "../context/AuthContext";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
@@ -19,7 +18,6 @@ function Books() {
     const [genres, setGenres] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const { token } = useAuth();
     const [error, setError] = useState("");
 
     useEffect(() => {
