@@ -11,7 +11,11 @@ import ReadingListDetails from './pages/ReadingListDetails';
 import BookDetail from './pages/BookDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
-import Update from './pages/Update';
+import Update from './pages/adminPages/Update';
+import UpdateBooks from './pages/adminPages/UpdateBooks';
+import UpdateAuthors from './pages/adminPages/UpdateAuthors';
+import UpdateGenres from './pages/adminPages/UpdateGenres';
+import UpdateUsers from './pages/adminPages/UpdateUsers';
 import User from './pages/User';
 
 // react defailts
@@ -33,6 +37,10 @@ function App() {
           <Route path="/reading-lists/:id" element={<ProtectedRoute><ReadingListDetails /></ProtectedRoute>} />
           <Route path="/books/:id" element={<BookDetail />} />
           <Route path="/update" element={<AdminRoute><Update /></AdminRoute>} />
+          <Route path="/update/books" element={<AdminRoute><UpdateBooks /></AdminRoute>} />
+          <Route path="/update/authors" element={<AdminRoute><UpdateAuthors /></AdminRoute>} />
+          <Route path="/update/genres" element={<AdminRoute><UpdateGenres /></AdminRoute>} />
+          <Route path="/update/users" element={<AdminRoute><UpdateUsers /></AdminRoute>} />
           <Route path="/users/:id" element={<User />} />
         </Routes>
       </div>
