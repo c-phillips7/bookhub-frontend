@@ -43,7 +43,7 @@ function Navbar() {
                                 </li>
                                 {isAdmin && (
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/update">Update</Link>
+                                        <Link className="nav-link" to="/update">Admin Panel</Link>
                                     </li>
                                 )}
                             </>

@@ -2,15 +2,17 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../services/Api";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { useAuth } from "../../context/AuthContext";
 
 function UpdateUsers() {
+    const { user: currentUser } = useAuth();
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     useEffect(() => {
         api.get("/api/account/users")
-            .then((res) => setUsers(res.data))
+            .then((res) => setUsers(res.data.filter((u) => u.id !== currentUser?.id))) // Exclude current user from list to prevent self-deletion
             .catch(() => setError("Failed to load users."))
             .finally(() => setLoading(false));
     }, []);
