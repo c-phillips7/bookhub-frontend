@@ -3,8 +3,6 @@ import { useParams, Link } from "react-router-dom";
 import api from "../services/Api";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-//TODO add page to view other users' reading list, and maybe option to save to your own lists if public
-
 function User() {
     const { id } = useParams();
 

@@ -7,10 +7,6 @@ import SearchBar from "../components/SearchBar";
 
 const ITEMS_PER_PAGE = 12;
 
-//TODO add interactive links to book details, author pages, genre pages on clicks. Maybe add ratings.
-//TODO update book cards to show more info and look nicer, maybe add cover images if available
-//TODO add an add to reading list button on book cards if logged in, or just leave that in BookDetail page for simplicity? 
-
 function Books() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
