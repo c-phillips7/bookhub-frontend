@@ -1,10 +1,14 @@
 # BookHub Frontend
 
-https://cp-bookhub.netlify.app/
-
 A single-page React application for managing and discovering books. Users can browse books, leave reviews, and manage personal reading lists. Administrators have access to additional CRUD pages for managing books, authors, genres, and users.
 
 The frontend consumes the BookHub .NET Core backend API, which handles authentication and all data persistence.
+
+## Live Demo
+
+The application is deployed on Netlify and available at **[https://cp-bookhub.netlify.app/](https://cp-bookhub.netlify.app/)**. It is wired to the deployed backend API, so you can register an account and use all features without running anything locally.
+
+> Note: the backend is hosted on Render's free tier, which spins down when idle. The first request after a period of inactivity may take 30–60 seconds while the API cold-starts.
 
 ---
 
